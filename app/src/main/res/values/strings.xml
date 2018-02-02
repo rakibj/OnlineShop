@@ -2,4 +2,5 @@
     <string name="app_name">OnlineShop</string>
     <string name="hats_category">Hats category</string>
     <string name="hats">Hats</string>
+    <string name="categories">Categories</string>
 </resources>
