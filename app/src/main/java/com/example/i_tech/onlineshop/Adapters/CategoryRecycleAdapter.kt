@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.category_list_item.view.*
 /**
  * Created by i-tech on 2/3/2018.
  */
-class CategoryRecycleAdapter(val context:Context, val categories:List<Category>) : RecyclerView.Adapter<CategoryRecycleAdapter.Holder>(){
+class CategoryRecycleAdapter(val context:Context, val categories:List<Category>,val itemClick: (Category)-> Unit) : RecyclerView.Adapter<CategoryRecycleAdapter.Holder>(){
 
     override fun getItemCount(): Int {
         return categories.count()
@@ -24,20 +24,27 @@ class CategoryRecycleAdapter(val context:Context, val categories:List<Category>)
         Holder?.bindCategory(categories[position],context)
     }
 
+    //if Loaded for the first time then inflate
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): Holder {
+        //Inflate the layout resource into a view
         val view = LayoutInflater.from(context).inflate(R.layout.category_list_item, parent,false)
-        return Holder(view)
+        return Holder(view,itemClick)
     }
 
 
-    inner class Holder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
+    inner class Holder(itemView: View?, val itemClick: (Category) -> Unit) : RecyclerView.ViewHolder(itemView) {
         val categoryImage = itemView?.findViewById<ImageView>(R.id.categoryImage)
         val categoryName = itemView?.findViewById<TextView>(R.id.categoryName)
 
         fun bindCategory(category: Category, context: Context){
+            //Image resource ID extraction
             val resourceId = context.resources.getIdentifier(category.image,"drawable",context.packageName)
+            //Setting the image and the text
             categoryImage?.setImageResource(resourceId)
             categoryName?.text = category.title
+
+            //if item is clicked
+            itemView.setOnClickListener{itemClick(category)}
         }
     }
 }
